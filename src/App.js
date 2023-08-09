@@ -1,23 +1,78 @@
-import logo from './logo.svg';
-import './App.css';
+import Banner from './componentes/Banner';
+import Formulario from './componentes/Formulario'
+import { useState } from 'react';
+import Time from './componentes/Time';
+import Rodape from './componentes/Rodape';
 
 function App() {
+
+  const times =  [
+  {
+    nome: 'Programação',
+    corPrimaria: '#58C278',
+    corSecundaria: '#D9F7E9'
+  },
+  {
+    nome: 'Front-End',
+    corPrimaria: '#82CFFA',
+    corSecundaria: '#E8F8FF'
+  },
+  {
+    nome: 'Data Science',
+    corPrimaria: '#A6D157',
+    corSecundaria: '#F0F8E2'
+  },
+  {
+    nome: 'Devops',
+    corPrimaria: '#E06B69',
+    corSecundaria: '#FDE7E8'
+  },
+  {
+    nome: 'UX e Design',
+    corPrimaria: '#DB6EBF',
+    corSecundaria: '#FAE9F5'
+  },
+  {
+    nome: 'Mobile',
+    corPrimaria: '#FFBA05',
+    corSecundaria: '#FFF5D9'
+  },
+  {
+    nome: 'Inovação e Gestão',
+    corPrimaria: '#FF8A29',
+    corSecundaria: '#FFEEDF'
+  }
+]
+
+  // usando uma lista para armazenar cada informação do usuário
+  const [colaboradores, setColaboradores] = useState([])
+
+  // criando uma lista vazia para colocar os colaboradores
+  const aoNovoColaboradorAdicionado = (colaborador) => {
+    // debugger para a aplicação na hora que a linha é lida para ler linha por linha com vc 
+    // debugger
+
+    // criando uma array nova e colocando os colaboradores antigos e adicionando os novos, ao invés de colocar uma var temporária para a array
+    setColaboradores([...colaboradores, colaborador])
+  }
+
+  // JSX
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Banner />
+      {/* pegando os times e passando apenas o nome de cada time para o form
+      LEMBRETE: usamos o map porque queremos o retorno dele, forEach não da retorno */}
+      <Formulario times={times.map(time => time.nome)} aoColaboradorCadastrado={colaborador => aoNovoColaboradorAdicionado(colaborador)} />
+      {/* react precisa da key para saber quando renderizar novamente */}
+      {times.map(time => <Time 
+        key={time.nome} 
+        nome={time.nome} 
+        corPrimaria={time.corPrimaria} 
+        corSecundaria={time.corSecundaria} 
+        // colocando filter para aparecer apenas no time colocado
+        colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
+      />)}
+      <Rodape />
     </div>
   );
 }
